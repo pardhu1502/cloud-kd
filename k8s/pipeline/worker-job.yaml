@@ -1,0 +1,49 @@
+# Two labelling workers running at the same time, one per shard.
+# An Indexed Job gives every pod its own completion index (0, 1); we pass it on as SHARD_INDEX.
+# The teacher runs in Ollama on the laptop; k3d makes the host reachable as host.k3d.internal.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pipeline
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: teacher-labelling
+  namespace: pipeline
+spec:
+  completionMode: Indexed
+  completions: 2
+  parallelism: 2
+  backoffLimit: 6
+  template:
+    metadata:
+      labels:
+        app: teacher-worker
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: worker
+          image: kd-worker:latest
+          imagePullPolicy: Never
+          env:
+            - name: SHARD_INDEX
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+            - name: SHARD_COUNT
+              value: "2"
+            - name: OLLAMA_URL
+              value: http://host.k3d.internal:11434
+            - name: S3_ENDPOINT
+              value: http://seaweedfs.data.svc.cluster.local:8333
+          envFrom:
+            - secretRef:
+                name: s3-credentials
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
