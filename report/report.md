@@ -4,7 +4,9 @@ Cloud Computing (CS3081) mini project.
 
 **Name:** Palli Pardha Saradhi Charan &nbsp;|&nbsp; **Roll no:** 230103009
 
-Repository: https://github.com/pardhu1502/cloud-kd (assessed commit: tag `final`)
+Repository: https://github.com/pardhu1502/cloud-kd
+
+Submitted version (tag `final`): https://github.com/pardhu1502/cloud-kd/tree/final
 
 Model releases: https://github.com/pardhu1502/cloud-kd/releases
 (`model-v1`, `model-v2`)

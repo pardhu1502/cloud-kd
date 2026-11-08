@@ -7,6 +7,7 @@ served on a local **k3d** Kubernetes cluster with **SeaweedFS** object storage.
 - Name: Palli Pardha Saradhi Charan
 - Roll no: 230103009
 - Repository: https://github.com/pardhu1502/cloud-kd
+- Submitted version (tag `final`): https://github.com/pardhu1502/cloud-kd/tree/final
 - Model releases: https://github.com/pardhu1502/cloud-kd/releases
   ([model-v1](https://github.com/pardhu1502/cloud-kd/releases/tag/model-v1),
   [model-v2](https://github.com/pardhu1502/cloud-kd/releases/tag/model-v2))
