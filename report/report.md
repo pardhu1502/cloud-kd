@@ -41,10 +41,12 @@ The bottleneck is the single Ollama instance, so more than two workers would not
 
 | input | (a) invalid JSON | (b) wrong keys | (c) bad intent | (d) bad slot | duplicates | kept |
 |---|---|---|---|---|---|---|
-| TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| 3000 | 0 | 2 | 12 | 169 | 47 | 2770 |
 
 Checks run in the order (a) to (d); duplicates are counted among records that passed (a)-(d),
-keeping the smallest id. `train.sha256`: TBD.
+keeping the smallest id. `train.sha256`: `df78cd9a3131674eda3ee25319548902dca552510d5d7b6a7a46dda9b77318b4`
+(re-running `clean.py` offline on `results/teacher/` gives the same hash). Both workers finished
+1,500 records each in 116 minutes (about 0.22 replies/s per worker).
 
 ## Task 2: Training the student
 
@@ -52,15 +54,20 @@ Pythia-70M, full fine-tuning on CPU, first 1,500 records of `train.jsonl`. Examp
 `Command: <text>\nJSON: <teacher JSON>` + EOS; loss only on the JSON tokens. Hyper-parameters
 and library versions in `training/config.yaml`. v2 = one more epoch (`training/config_v2.yaml`).
 
-Loss per epoch: `training/loss.csv` (TBD figure).
+Loss per epoch (`training/loss.csv`): 0.685, 0.404, 0.197, 0.128, 0.088, 0.059, 0.039, 0.022,
+0.010, 0.003 (about 135 s per epoch on CPU). v2 (`training/loss_v2.csv`) ends at 0.0015 after 11 epochs.
+
+Validation set, 100 commands (`results/*_validation.json`, scored with `tools/score.py`), all in %:
 
 | model | json_validity | intent | date | time | place | full_frame |
 |---|---|---|---|---|---|---|
-| teacher phi3.5 | TBD | TBD | TBD | TBD | TBD | TBD |
-| Pythia-70M untrained | TBD | TBD | TBD | TBD | TBD | TBD |
-| student v1 | TBD | TBD | TBD | TBD | TBD | TBD |
+| teacher phi3.5 | 99 | 86 | 76 | 84 | 91 | 50 |
+| Pythia-70M untrained | 0 | 0 | 0 | 0 | 0 | 0 |
+| student v1 | 98 | 82 | 79 | 85 | 84 | 44 |
 
-Release asset `model-v1.tar.gz` SHA-256 = `models/v1/model.sha256` = TBD.
+Release asset `model-v1.tar.gz` SHA-256 = `models/v1/model.sha256` =
+`2745c105d4355c022fdd29ac7ddc006e1502126761b33da88eb29c713031e4c4`
+(v2: `cb3fb317a022883d27f2299537e25d0ee482350deccd3b9d09a0680ccb87891f`).
 
 **Sequence-level vs logit-based distillation.**
 (a) Sequence-level distillation trains the student with ordinary cross-entropy on the
@@ -78,7 +85,8 @@ addition, Ollama only returns the generated text, not per-token logits over the 
 mistakes. Wherever phi3.5 is wrong (for example labelling a "remind me" request inconsistently,
 or copying a longer phrase than the slot rules allow) the student learns the error as truth, and
 the cleaning step only removes structurally invalid replies, not semantically wrong ones. The
-student's accuracy is therefore capped by the teacher's (TBD: teacher full-frame vs student).
+student's accuracy is therefore capped by the teacher's: full-frame 44% for the student against
+50% for phi3.5 on the same 100 commands.
 
 ## Task 3: Inference service
 
@@ -136,8 +144,8 @@ used TBD failed requests = TBD % of the budget.
 
 | Component | Evidence (measured) | Limitation | Improvement |
 |---|---|---|---|
-| Data and storage | TBD of 3,000 replies kept | single SeaweedFS pod, no replication | replicated volumes / erasure coding |
-| Model quality | full-frame TBD % vs teacher TBD % | 70M model, teacher errors copied | larger student or logit KD with a shared tokenizer |
+| Data and storage | 2,770 of 3,000 replies kept | single SeaweedFS pod, no replication | replicated volumes / erasure coding |
+| Model quality | full-frame 44 % vs teacher 50 % | 70M model, teacher errors copied | larger student or logit KD with a shared tokenizer |
 | Latency and throughput | p95 TBD ms at TBD req/s | one request at a time per pod, CPU only | batching, quantised model, ONNX Runtime |
 | Resource utilisation | TBD m CPU, TBD Mi per pod | CPU-bound, memory mostly idle | lower memory limit, more CPU per pod |
 | Reliability and recovery | cold start TBD s, TBD % errors on pod loss | single node | multi-node cluster, PodDisruptionBudget |
