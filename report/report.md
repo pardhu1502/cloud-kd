@@ -1,7 +1,11 @@
 # Knowledge Distillation and Deployment of a Command Parser on a Local Cloud
 
-Draft of the report (export to `report/report.pdf`, at most 8 pages).
-Every `TBD` must be filled from a file in `results/`. Measured values and assumptions are kept separate.
+Cloud Computing (CS3081) mini project. Repository: https://github.com/pardhu1502/cloud-kd
+(assessed commit: tag `final`).
+
+Every number in this report is **measured** and comes from a file in `results/` or `training/`
+(named next to it). **Assumptions** are marked as such. All measurements were taken on one
+Windows 11 laptop running Docker Desktop and a single-node k3d cluster.
 
 ## Architecture
 
@@ -57,6 +61,8 @@ and library versions in `training/config.yaml`. v2 = one more epoch (`training/c
 Loss per epoch (`training/loss.csv`): 0.685, 0.404, 0.197, 0.128, 0.088, 0.059, 0.039, 0.022,
 0.010, 0.003 (about 135 s per epoch on CPU). v2 (`training/loss_v2.csv`) ends at 0.0015 after 11 epochs.
 
+![Training loss per epoch](loss.png)
+
 Validation set, 100 commands (`results/*_validation.json`, scored with `tools/score.py`), all in %:
 
 | model | json_validity | intent | date | time | place | full_frame |
@@ -64,6 +70,16 @@ Validation set, 100 commands (`results/*_validation.json`, scored with `tools/sc
 | teacher phi3.5 | 99 | 86 | 76 | 84 | 91 | 50 |
 | Pythia-70M untrained | 0 | 0 | 0 | 0 | 0 | 0 |
 | student v1 | 98 | 82 | 79 | 85 | 84 | 44 |
+
+**What changed.** The untrained Pythia-70M never produces a valid frame: given the same
+`Command: ...\nJSON:` prompt it continues with fragments such as `{` or `- name: "calendar"`, so
+every metric is 0. After distillation the same 70M model produces valid JSON for 98 of 100
+commands and comes within a few points of the 3.8B teacher on every field. It is slightly
+*better* than the teacher on date (79 vs 76) and time (85 vs 84), which is plausible because
+it was trained on the cleaned replies only, so it never saw the teacher's malformed or
+off-schema answers. It is worse on place (84 vs 91) and intent (82 vs 86), and full-frame
+accuracy drops from 50 % to 44 %. The two invalid student outputs are a truncated/garbled
+slot value and a frame with missing keys; the service turns these into HTTP 500s (Task 3).
 
 Release asset `model-v1.tar.gz` SHA-256 = `models/v1/model.sha256` =
 `2745c105d4355c022fdd29ac7ddc006e1502126761b33da88eb29c713031e4c4`
@@ -122,13 +138,48 @@ compete for the same physical cores, so a second replica adds less capacity than
 
 ## Task 5: Subnetting and NACL
 
-See `network/subnets.md` (table, working and explanation). `nacl_sim.py --check` on the
-sample packets: 6/6.
+Full working in `network/subnets.md`; the table is re-checked with Python's `ipaddress` in
+`tests/test_network.py`. Subnets of 10.20.0.0/16 are allocated largest first, each with the
+smallest prefix whose `2^(32-p) - 2` usable hosts covers the requirement.
+
+| Subnet | Hosts needed | Network | Usable range | Broadcast | Usable hosts |
+|---|---|---|---|---|---|
+| app | 1,000 | 10.20.0.0/22 | 10.20.0.1 - 10.20.3.254 | 10.20.3.255 | 1,022 |
+| public | 250 | 10.20.4.0/24 | 10.20.4.1 - 10.20.4.254 | 10.20.4.255 | 254 |
+| data | 100 | 10.20.5.0/25 | 10.20.5.1 - 10.20.5.126 | 10.20.5.127 | 126 |
+| management | 20 | 10.20.5.128/27 | 10.20.5.129 - 10.20.5.158 | 10.20.5.159 | 30 |
+
+NACL for the public subnet (`network/nacl.json`). Inbound: 50 deny all from 198.51.100.0/24;
+100 allow tcp 80 and 110 allow tcp 443 from anywhere; 120 allow tcp 22 from management
+(10.20.5.128/27); 130 allow tcp 1024-65535 from app (10.20.0.0/22); default deny. Outbound:
+100 allow tcp 8000 to app; 110 allow tcp 1024-65535 to anywhere; default deny.
+`python tools/nacl_sim.py network/nacl.json network/packets_sample.jsonl --check`: **6/6**.
+
+**Why separate reply rules, and why order matters.** A NACL is stateless: it does not remember
+that a connection was opened, so every packet, replies included, is checked against the rules
+on its own. When a client connects to port 443, the reply leaves the subnet towards the
+client's ephemeral port (1024-65535), so it only gets out because outbound rule 110 allows
+it; likewise the app's answer to the load balancer comes back to an ephemeral port and needs
+inbound rule 130. A stateful security group would allow these replies automatically. Rules are
+evaluated from the lowest number up and the first match wins: a packet from 198.51.100.9 to
+port 443 matches both rule 50 (deny) and rule 110 (allow), and is blocked only because 50 is
+lower. Numbered 200, the deny would never be reached for web traffic. A side effect of
+statelessness: outbound rule 110 also lets the subnet open new connections to any port
+from 1024 up (for example 8000 outside the app subnet), because a NACL cannot tell a reply from a
+new connection.
 
 ## Task 6: Reproducibility and CI/CD
 
-`make up` from a fresh clone (clone, cd, make up). CI stages: lint, unit tests, evaluation
-of the Release asset, quality gate; gitleaks. Passing run with `model-v1`:
+`make up` from a fresh clone (clone, cd, make up) creates the venv, the k3d cluster, random
+S3 keys in the git-ignored `.env` and the matching Secrets, SeaweedFS, the buckets, both
+images, downloads `model-v1`/`model-v2` from the GitHub Release into S3 (checking the
+SHA-256), and deploys the app; `make down` deletes the cluster. (Each of these targets was
+run on this laptop; a full `make up` on a second, clean machine was not tested.) All library versions are
+pinned; training uses a fixed seed (42). CI (`.github/workflows/ci.yml`) runs, in order:
+lint (ruff), unit tests (33 pytest tests: cleaning rules, shard coverage, service endpoints
+and headers, fault injection, subnet plan and NACL), evaluation of the Release asset on
+`validation.jsonl`, and the quality gate `score.py --min-validity 95`; gitleaks scans the
+full history in parallel and reports nothing. Passing run with `model-v1`:
 https://github.com/pardhu1502/cloud-kd/actions/runs/42490095335. Failed gate run with the
 untrained model (`model_tag=bad`, JSON validity 0% < 95%):
 https://github.com/pardhu1502/cloud-kd/actions/runs/42490284576.
