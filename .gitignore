@@ -1,0 +1,17 @@
+# credentials, generated per machine by scripts/secrets.sh
+.env
+*.pem
+*.key
+
+# model weights and release archives: object storage + GitHub Release only
+artifacts/
+*.safetensors
+*.bin
+*.pt
+*.tar.gz
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
