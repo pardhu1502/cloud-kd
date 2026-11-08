@@ -1,0 +1,14 @@
+{
+  "_comment": "NACL for the public subnet 10.20.4.0/24 (load balancer). app = 10.20.0.0/22, management = 10.20.5.128/27. Lowest rule number wins.",
+  "inbound": [
+    {"rule": 50,  "protocol": "all", "cidr": "198.51.100.0/24", "action": "deny",  "_note": "known abusive range, before every allow"},
+    {"rule": 100, "protocol": "tcp", "port_from": 80,   "port_to": 80,    "cidr": "0.0.0.0/0",      "action": "allow", "_note": "HTTP"},
+    {"rule": 110, "protocol": "tcp", "port_from": 443,  "port_to": 443,   "cidr": "0.0.0.0/0",      "action": "allow", "_note": "HTTPS"},
+    {"rule": 120, "protocol": "tcp", "port_from": 22,   "port_to": 22,    "cidr": "10.20.5.128/27", "action": "allow", "_note": "SSH from management only"},
+    {"rule": 130, "protocol": "tcp", "port_from": 1024, "port_to": 65535, "cidr": "10.20.0.0/22",   "action": "allow", "_note": "replies from the app subnet to our ephemeral ports"}
+  ],
+  "outbound": [
+    {"rule": 100, "protocol": "tcp", "port_from": 8000, "port_to": 8000,  "cidr": "10.20.0.0/22", "action": "allow", "_note": "LB -> app service"},
+    {"rule": 110, "protocol": "tcp", "port_from": 1024, "port_to": 65535, "cidr": "0.0.0.0/0",    "action": "allow", "_note": "replies to clients' ephemeral ports"}
+  ]
+}
