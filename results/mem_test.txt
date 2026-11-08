@@ -1,0 +1,48 @@
+date: 2026-11-08T14:47:48Z
+limits: --cpus 1 --memory 1g
+requests: 50 sequential, HTTP 200: 48, other: 2
+OOMKilled: false
+docker stats samples (MemUsage / limit):
+  446.3MiB / 1GiB
+  446.5MiB / 1GiB
+  446.6MiB / 1GiB
+  447.8MiB / 1GiB
+  448.1MiB / 1GiB
+  448.5MiB / 1GiB
+  448.6MiB / 1GiB
+  448.8MiB / 1GiB
+  448MiB / 1GiB
+  449.1MiB / 1GiB
+  449.3MiB / 1GiB
+  449.5MiB / 1GiB
+  449.6MiB / 1GiB
+  449.8MiB / 1GiB
+  449.9MiB / 1GiB
+  449MiB / 1GiB
+  450.8MiB / 1GiB
+  450.9MiB / 1GiB
+  451.1MiB / 1GiB
+  451.2MiB / 1GiB
+  451.4MiB / 1GiB
+  451.5MiB / 1GiB
+  451.6MiB / 1GiB
+  451.7MiB / 1GiB
+  451.9MiB / 1GiB
+  451MiB / 1GiB
+  452.1MiB / 1GiB
+  452.2MiB / 1GiB
+  452.6MiB / 1GiB
+  452.7MiB / 1GiB
+  452.8MiB / 1GiB
+  452.9MiB / 1GiB
+  453.1MiB / 1GiB
+  453.2MiB / 1GiB
+  453.3MiB / 1GiB
+  453.4MiB / 1GiB
+  453.5MiB / 1GiB
+  453.6MiB / 1GiB
+  453.9MiB / 1GiB
+  453MiB / 1GiB
+  454.4MiB / 1GiB
+  454MiB / 1GiB
+peak: 454.4 MiB

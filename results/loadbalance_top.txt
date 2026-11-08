@@ -1,0 +1,35 @@
+--- 15:05:27
+error: metrics not available yet
+--- 15:05:37
+parser-79444fb7f8-8gbh7   496m   410Mi   
+parser-79444fb7f8-rc8q2   471m   429Mi   
+--- 15:05:48
+parser-79444fb7f8-8gbh7   997m    411Mi   
+parser-79444fb7f8-rc8q2   1125m   429Mi   
+--- 15:05:58
+parser-79444fb7f8-8gbh7   997m    411Mi   
+parser-79444fb7f8-rc8q2   1125m   429Mi   
+--- 15:06:08
+parser-79444fb7f8-8gbh7   999m   419Mi   
+parser-79444fb7f8-rc8q2   998m   437Mi   
+--- 15:06:19
+parser-79444fb7f8-8gbh7   705m   430Mi   
+parser-79444fb7f8-rc8q2   998m   438Mi   
+--- 15:06:29
+parser-79444fb7f8-8gbh7   705m   430Mi   
+parser-79444fb7f8-rc8q2   998m   438Mi   
+--- 15:06:39
+parser-79444fb7f8-8gbh7   799m   441Mi   
+parser-79444fb7f8-rc8q2   672m   451Mi   
+--- 15:06:49
+parser-79444fb7f8-8gbh7   984m   442Mi   
+parser-79444fb7f8-rc8q2   771m   457Mi   
+--- 15:07:00
+parser-79444fb7f8-8gbh7   984m   442Mi   
+parser-79444fb7f8-rc8q2   771m   457Mi   
+--- 15:07:10
+parser-79444fb7f8-8gbh7   959m   448Mi   
+parser-79444fb7f8-rc8q2   971m   466Mi   
+--- 15:07:20
+parser-79444fb7f8-8gbh7   959m   448Mi   
+parser-79444fb7f8-rc8q2   453m   465Mi   

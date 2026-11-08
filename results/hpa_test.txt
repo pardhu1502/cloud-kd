@@ -1,0 +1,64 @@
+14:48:29 waiting for the HPA to settle at 1 replica
+14:48:29 parser   Deployment/parser   cpu: 0%/70%   1     2     1     6m1s ready=1/1
+14:48:39 parser   Deployment/parser   cpu: 0%/70%   1     2     1     6m11s ready=1/1
+14:48:50 parser   Deployment/parser   cpu: 0%/70%   1     2     1     6m22s ready=1/1
+14:49:00 parser   Deployment/parser   cpu: 86%/70%   1     2     1     6m32s ready=1/2
+14:49:10 parser   Deployment/parser   cpu: 86%/70%   1     2     1     6m43s ready=2/2
+14:49:21 parser   Deployment/parser   cpu: 86%/70%   1     2     2     6m53s ready=2/2
+14:49:31 parser   Deployment/parser   cpu: 199%/70%   1     2     2     7m3s ready=2/2
+14:49:42 parser   Deployment/parser   cpu: 199%/70%   1     2     2     7m14s ready=2/2
+14:49:52 parser   Deployment/parser   cpu: 180%/70%   1     2     2     7m24s ready=2/2
+14:50:02 parser   Deployment/parser   cpu: 159%/70%   1     2     2     7m34s ready=2/2
+14:50:12 parser   Deployment/parser   cpu: 159%/70%   1     2     2     7m45s ready=2/2
+14:50:23 parser   Deployment/parser   cpu: 140%/70%   1     2     2     7m55s ready=2/2
+14:50:33 parser   Deployment/parser   cpu: 159%/70%   1     2     2     8m5s ready=2/2
+14:50:44 parser   Deployment/parser   cpu: 140%/70%   1     2     2     8m16s ready=2/2
+14:50:54 parser   Deployment/parser   cpu: 140%/70%   1     2     2     8m26s ready=2/2
+14:51:04 parser   Deployment/parser   cpu: 187%/70%   1     2     2     8m36s ready=2/2
+14:51:15 parser   Deployment/parser   cpu: 120%/70%   1     2     2     8m48s ready=2/2
+14:51:26 parser   Deployment/parser   cpu: 120%/70%   1     2     2     8m58s ready=2/2
+14:51:36 parser   Deployment/parser   cpu: 198%/70%   1     2     2     9m9s ready=2/2
+14:51:47 parser   Deployment/parser   cpu: 145%/70%   1     2     2     9m19s ready=2/2
+14:51:57 parser   Deployment/parser   cpu: 145%/70%   1     2     2     9m29s ready=2/2
+14:52:07 parser   Deployment/parser   cpu: 153%/70%   1     2     2     9m40s ready=2/2
+14:52:18 parser   Deployment/parser   cpu: 177%/70%   1     2     2     9m50s ready=2/2
+14:52:28 parser   Deployment/parser   cpu: 177%/70%   1     2     2     10m ready=2/2
+14:52:32 load finished, watching scale-down
+14:52:38 parser   Deployment/parser   cpu: 159%/70%   1     2     2     10m ready=2/2
+14:52:49 parser   Deployment/parser   cpu: 117%/70%   1     2     2     10m ready=2/2
+14:52:59 parser   Deployment/parser   cpu: 99%/70%   1     2     2     10m ready=2/2
+14:53:09 parser   Deployment/parser   cpu: 99%/70%   1     2     2     10m ready=2/2
+14:53:20 parser   Deployment/parser   cpu: 0%/70%   1     2     2     10m ready=2/2
+14:53:30 parser   Deployment/parser   cpu: 0%/70%   1     2     2     11m ready=2/2
+14:53:40 parser   Deployment/parser   cpu: 0%/70%   1     2     2     11m ready=2/2
+14:53:51 parser   Deployment/parser   cpu: 0%/70%   1     2     2     11m ready=2/2
+14:54:01 parser   Deployment/parser   cpu: 0%/70%   1     2     2     11m ready=1/1
+14:54:11 parser   Deployment/parser   cpu: 0%/70%   1     2     2     11m ready=1/1
+14:54:22 parser   Deployment/parser   cpu: 0%/70%   1     2     1     11m ready=1/1
+14:54:32 parser   Deployment/parser   cpu: 0%/70%   1     2     1     12m ready=1/1
+14:54:42 parser   Deployment/parser   cpu: 0%/70%   1     2     1     12m ready=1/1
+14:54:53 parser   Deployment/parser   cpu: 0%/70%   1     2     1     12m ready=1/1
+14:55:03 parser   Deployment/parser   cpu: 0%/70%   1     2     1     12m ready=1/1
+14:55:13 parser   Deployment/parser   cpu: 0%/70%   1     2     1     12m ready=1/1
+14:55:24 parser   Deployment/parser   cpu: 0%/70%   1     2     1     12m ready=1/1
+14:55:34 parser   Deployment/parser   cpu: 0%/70%   1     2     1     13m ready=1/1
+14:55:44 parser   Deployment/parser   cpu: 0%/70%   1     2     1     13m ready=1/1
+14:55:55 parser   Deployment/parser   cpu: 0%/70%   1     2     1     13m ready=1/1
+14:56:05 parser   Deployment/parser   cpu: 0%/70%   1     2     1     13m ready=1/1
+14:56:15 parser   Deployment/parser   cpu: 0%/70%   1     2     1     13m ready=1/1
+14:56:25 parser   Deployment/parser   cpu: 0%/70%   1     2     1     13m ready=1/1
+Conditions:
+  Type            Status  Reason            Message
+  ----            ------  ------            -------
+  AbleToScale     True    ReadyForNewScale  recommended size matches current size
+  ScalingActive   True    ValidMetricFound  the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooFewReplicas    the desired replica count is less than the minimum replica count
+Events:
+  Type     Reason                        Age                  From                       Message
+  ----     ------                        ----                 ----                       -------
+  Warning  FailedGetResourceMetric       13m                  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+  Warning  FailedComputeMetricsReplicas  13m                  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+  Warning  FailedGetResourceMetric       13m                  horizontal-pod-autoscaler  failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)
+  Warning  FailedComputeMetricsReplicas  13m                  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)
+  Normal   SuccessfulRescale             7m34s                horizontal-pod-autoscaler  New size: 2; reason: cpu resource utilization (percentage of request) above target
+  Normal   SuccessfulRescale             2m33s (x2 over 12m)  horizontal-pod-autoscaler  New size: 1; reason: All metrics below target

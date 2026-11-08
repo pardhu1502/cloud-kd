@@ -1,0 +1,17 @@
+run 1: deleting pods
+  parser-79444fb7f8-6lqmx created 2026-11-08T15:04:51Z ready 2026-11-08T15:05:01Z -> 10s
+    2026-11-08 15:04:57,000 INFO downloaded model from s3://models/v1/ (7 files) in 3.7s
+  parser-79444fb7f8-pr2ft created 2026-11-08T15:04:51Z ready 2026-11-08T15:05:01Z -> 10s
+    2026-11-08 15:04:57,004 INFO downloaded model from s3://models/v1/ (7 files) in 3.7s
+run 2: deleting pods
+  parser-79444fb7f8-m228g created 2026-11-08T15:05:03Z ready 2026-11-08T15:05:12Z -> 9s
+    2026-11-08 15:05:08,594 INFO downloaded model from s3://models/v1/ (7 files) in 3.8s
+  parser-79444fb7f8-qm4jl created 2026-11-08T15:05:03Z ready 2026-11-08T15:05:12Z -> 9s
+    2026-11-08 15:05:08,555 INFO downloaded model from s3://models/v1/ (7 files) in 3.8s
+run 3: deleting pods
+  parser-79444fb7f8-8gbh7 created 2026-11-08T15:05:15Z ready 2026-11-08T15:05:24Z -> 9s
+    2026-11-08 15:05:20,261 INFO downloaded model from s3://models/v1/ (7 files) in 3.7s
+  parser-79444fb7f8-rc8q2 created 2026-11-08T15:05:15Z ready 2026-11-08T15:05:24Z -> 9s
+    2026-11-08 15:05:20,104 INFO downloaded model from s3://models/v1/ (7 files) in 3.6s
+all times (s): [10.0, 10.0, 9.0, 9.0, 9.0, 9.0]
+median creation -> Ready: 9.0 s

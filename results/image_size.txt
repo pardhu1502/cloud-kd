@@ -1,0 +1,5 @@
+date: 2026-11-08T15:12:35Z
+docker images (unpacked on disk):
+kd-parser:latest c0a4f76a5a5a 1.71GB
+docker image inspect .Size (compressed layers, bytes): 369126709
+weights in image: 0 files

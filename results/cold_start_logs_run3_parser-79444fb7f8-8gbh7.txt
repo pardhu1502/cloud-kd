@@ -1,0 +1,11 @@
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     10.42.0.1:36112 - "GET /readyz HTTP/1.1" 503 Service Unavailable
+INFO:     10.42.0.1:36118 - "GET /readyz HTTP/1.1" 503 Service Unavailable
+INFO:     10.42.0.1:36124 - "GET /readyz HTTP/1.1" 503 Service Unavailable
+2026-11-08 15:05:20,261 INFO downloaded model from s3://models/v1/ (7 files) in 3.7s
+INFO:     10.42.0.1:36136 - "GET /readyz HTTP/1.1" 503 Service Unavailable
+2026-11-08 15:05:24,160 INFO model v1 loaded, ready after 7.6s
+INFO:     10.42.0.1:36150 - "GET /readyz HTTP/1.1" 200 OK

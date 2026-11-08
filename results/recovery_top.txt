@@ -1,0 +1,53 @@
+--- 15:01:46
+parser-79444fb7f8-wjzzt   774m   431Mi   
+parser-79444fb7f8-zwnw6   778m   515Mi   
+--- 15:01:56
+parser-79444fb7f8-wjzzt   584m   429Mi   
+parser-79444fb7f8-zwnw6   979m   518Mi   
+--- 15:02:07
+parser-79444fb7f8-wjzzt   605m   430Mi   
+parser-79444fb7f8-zwnw6   493m   515Mi   
+--- 15:02:17
+parser-79444fb7f8-wjzzt   473m   429Mi   
+parser-79444fb7f8-zwnw6   797m   517Mi   
+--- 15:02:27
+parser-79444fb7f8-zwnw6   797m   517Mi   
+--- 15:02:37
+parser-79444fb7f8-wc56k   736m   362Mi   
+parser-79444fb7f8-zwnw6   995m   519Mi   
+--- 15:02:48
+parser-79444fb7f8-wc56k   992m   379Mi   
+parser-79444fb7f8-zwnw6   995m   519Mi   
+--- 15:02:58
+parser-79444fb7f8-wc56k   992m   379Mi   
+parser-79444fb7f8-zwnw6   995m   519Mi   
+--- 15:03:08
+parser-79444fb7f8-wc56k   718m   379Mi   
+parser-79444fb7f8-zwnw6   754m   518Mi   
+--- 15:03:19
+parser-79444fb7f8-wc56k   974m   386Mi   
+parser-79444fb7f8-zwnw6   813m   526Mi   
+--- 15:03:29
+parser-79444fb7f8-wc56k   974m   386Mi   
+parser-79444fb7f8-zwnw6   813m   526Mi   
+--- 15:03:39
+parser-79444fb7f8-wc56k   706m    386Mi   
+parser-79444fb7f8-zwnw6   1003m   530Mi   
+--- 15:03:49
+parser-79444fb7f8-wc56k   949m    390Mi   
+parser-79444fb7f8-zwnw6   1003m   530Mi   
+--- 15:04:00
+parser-79444fb7f8-wc56k   949m    390Mi   
+parser-79444fb7f8-zwnw6   1003m   530Mi   
+--- 15:04:10
+parser-79444fb7f8-wc56k   949m   390Mi   
+parser-79444fb7f8-zwnw6   598m   530Mi   
+--- 15:04:20
+parser-79444fb7f8-wc56k   806m   391Mi   
+parser-79444fb7f8-zwnw6   760m   533Mi   
+--- 15:04:31
+parser-79444fb7f8-wc56k   806m   391Mi   
+parser-79444fb7f8-zwnw6   760m   533Mi   
+--- 15:04:41
+parser-79444fb7f8-wc56k   781m   392Mi   
+parser-79444fb7f8-zwnw6   840m   535Mi   

@@ -1,0 +1,36 @@
+--- 15:08:33
+parser-79444fb7f8-8gbh7   3m    451Mi   
+parser-79444fb7f8-rc8q2   3m    463Mi   
+--- 15:08:43
+parser-79444fb7f8-8gbh7   3m    451Mi   
+parser-79444fb7f8-rc8q2   3m    463Mi   
+--- 15:08:54
+parser-79444fb7f8-8gbh7   293m   451Mi   
+parser-79444fb7f8-rc8q2   217m   464Mi   
+--- 15:09:04
+parser-79444fb7f8-8gbh7   996m    452Mi   
+parser-79444fb7f8-rc8q2   1000m   465Mi   
+--- 15:09:14
+parser-79444fb7f8-8gbh7   996m    452Mi   
+parser-79444fb7f8-rc8q2   1000m   465Mi   
+--- 15:09:24
+parser-79444fb7f8-8gbh7   752m   452Mi   
+parser-79444fb7f8-rc8q2   995m   468Mi   
+--- 15:09:35
+parser-79444fb7f8-8gbh7   1000m   456Mi   
+parser-79444fb7f8-rc8q2   847m    468Mi   
+--- 15:09:45
+parser-79444fb7f8-8gbh7   1000m   456Mi   
+parser-79444fb7f8-rc8q2   847m    468Mi   
+--- 15:09:55
+parser-79444fb7f8-8gbh7   743m   456Mi   
+parser-79444fb7f8-rc8q2   993m   471Mi   
+--- 15:10:06
+parser-79444fb7f8-8gbh7   795m   459Mi   
+parser-79444fb7f8-rc8q2   768m   470Mi   
+--- 15:10:16
+parser-79444fb7f8-8gbh7   795m   459Mi   
+parser-79444fb7f8-rc8q2   768m   470Mi   
+--- 15:10:26
+parser-79444fb7f8-8gbh7   795m   459Mi   
+parser-79444fb7f8-rc8q2   575m   473Mi   

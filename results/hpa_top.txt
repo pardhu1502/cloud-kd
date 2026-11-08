@@ -1,0 +1,67 @@
+--- 14:48:29
+parser-79444fb7f8-vskfc   3m    364Mi   
+--- 14:48:39
+parser-79444fb7f8-vskfc   3m    364Mi   
+--- 14:48:50
+parser-79444fb7f8-vskfc   434m   507Mi   
+--- 14:49:00
+parser-79444fb7f8-vskfc   434m   507Mi   
+--- 14:49:10
+parser-79444fb7f8-vskfc   434m   507Mi   
+--- 14:49:21
+parser-79444fb7f8-2qstj   738m   370Mi   
+parser-79444fb7f8-vskfc   998m   534Mi   
+--- 14:49:31
+parser-79444fb7f8-2qstj   738m   370Mi   
+parser-79444fb7f8-vskfc   998m   534Mi   
+--- 14:49:41
+parser-79444fb7f8-2qstj   992m   388Mi   
+parser-79444fb7f8-vskfc   813m   537Mi   
+--- 14:49:52
+parser-79444fb7f8-2qstj   604m   389Mi   
+parser-79444fb7f8-vskfc   993m   541Mi   
+--- 14:50:02
+parser-79444fb7f8-2qstj   729m   397Mi   
+parser-79444fb7f8-vskfc   676m   540Mi   
+--- 14:50:12
+parser-79444fb7f8-2qstj   729m   397Mi   
+parser-79444fb7f8-vskfc   676m   540Mi   
+--- 14:50:22
+parser-79444fb7f8-2qstj   892m   398Mi   
+parser-79444fb7f8-vskfc   705m   545Mi   
+--- 14:50:33
+parser-79444fb7f8-2qstj   700m   401Mi   
+parser-79444fb7f8-vskfc   705m   545Mi   
+--- 14:50:43
+parser-79444fb7f8-2qstj   700m   401Mi   
+parser-79444fb7f8-vskfc   705m   545Mi   
+--- 14:50:53
+parser-79444fb7f8-2qstj   998m   414Mi   
+parser-79444fb7f8-vskfc   873m   545Mi   
+--- 14:51:04
+parser-79444fb7f8-2qstj   530m   414Mi   
+parser-79444fb7f8-vskfc   674m   548Mi   
+--- 14:51:14
+parser-79444fb7f8-2qstj   530m   414Mi   
+parser-79444fb7f8-vskfc   674m   548Mi   
+--- 14:51:24
+parser-79444fb7f8-2qstj   997m   418Mi   
+parser-79444fb7f8-vskfc   990m   550Mi   
+--- 14:51:35
+parser-79444fb7f8-2qstj   892m   417Mi   
+parser-79444fb7f8-vskfc   563m   551Mi   
+--- 14:51:45
+parser-79444fb7f8-2qstj   892m   417Mi   
+parser-79444fb7f8-vskfc   563m   551Mi   
+--- 14:51:55
+parser-79444fb7f8-2qstj   972m   421Mi   
+parser-79444fb7f8-vskfc   563m   551Mi   
+--- 14:52:05
+parser-79444fb7f8-2qstj   999m   420Mi   
+parser-79444fb7f8-vskfc   773m   556Mi   
+--- 14:52:16
+parser-79444fb7f8-2qstj   999m   420Mi   
+parser-79444fb7f8-vskfc   773m   556Mi   
+--- 14:52:26
+parser-79444fb7f8-2qstj   718m   420Mi   
+parser-79444fb7f8-vskfc   873m   555Mi   

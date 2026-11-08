@@ -1,0 +1,43 @@
+deployment "parser" successfully rolled out
+14:57:06 set MODEL_VERSION=v2 MODEL_URI=s3://models/v2/
+deployment.apps/parser env updated
+Waiting for deployment "parser" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "parser" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "parser" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "parser" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "parser" rollout to finish: 1 old replicas are pending termination...
+deployment "parser" successfully rolled out
+X-Model-Version: v2
+14:58:07 rollout undo
+Warning: resource deployments/parser was previously managed with 'kubectl apply'. Rolling back will not update the kubectl.kubernetes.io/last-applied-configuration annotation, which may cause unexpected behavior on future 'kubectl apply' operations. Consider using 'kubectl apply' with your previous configuration file instead.
+deployment.apps/parser rolled back
+Waiting for deployment "parser" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "parser" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "parser" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "parser" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "parser" rollout to finish: 1 old replicas are pending termination...
+deployment "parser" successfully rolled out
+15:01:38 after rollback:
+X-Model-Version: v1
+deployment.apps/parser 
+REVISION  CHANGE-CAUSE
+2         <none>
+3         <none>
+
+Type,Name,Request Count,Failure Count,Median Response Time,Average Response Time,Min Response Time,Max Response Time,Average Content Size,Requests/s,Failures/s,50%,66%,75%,80%,90%,95%,98%,99%,99.9%,99.99%,100%
+POST,/parse,298,6,2500.0,3987.187846301236,683.8092003017664,13022.999999579042,70.08053691275168,0.9992526063298424,0.020119179993218304,2500,5300,6700,7600,9100,11000,12000,12000,13000,13000,13000
+,Aggregated,298,6,2500.0,3987.187846301236,683.8092003017664,13022.999999579042,70.08053691275168,0.9992526063298424,0.020119179993218304,2500,5300,6700,7600,9100,11000,12000,12000,13000,13000,13000
+{
+  "per_replica": {
+    "parser-79444fb7f8-vskfc": 24,
+    "parser-79444fb7f8-87fsv": 14,
+    "parser-b95c97f68-s25ks": 27,
+    "parser-b95c97f68-bcgnq": 27,
+    "parser-79444fb7f8-wjzzt": 103,
+    "parser-79444fb7f8-zwnw6": 98
+  },
+  "per_model_version": {
+    "v1": 239,
+    "v2": 54
+  }
+}
