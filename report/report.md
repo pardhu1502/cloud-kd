@@ -123,7 +123,10 @@ sample packets: 6/6.
 ## Task 6: Reproducibility and CI/CD
 
 `make up` from a fresh clone (clone, cd, make up). CI stages: lint, unit tests, evaluation
-of the Release asset, quality gate; gitleaks. Failed gate run with the untrained model: TBD link.
+of the Release asset, quality gate; gitleaks. Passing run with `model-v1`:
+https://github.com/pardhu1502/cloud-kd/actions/runs/42490095335. Failed gate run with the
+untrained model (`model_tag=bad`, JSON validity 0% < 95%):
+https://github.com/pardhu1502/cloud-kd/actions/runs/42490284576.
 
 ## Task 7: Performance, cost and review
 
