@@ -4,6 +4,13 @@ Cloud Computing (CS3081) mini project: sequence-level knowledge distillation of 
 command parser from **phi3.5** (teacher, 3.8B, Ollama) into **Pythia-70M** (student),
 served on a local **k3d** Kubernetes cluster with **SeaweedFS** object storage.
 
+- Name: Palli Pardha Saradhi Charan
+- Roll no: 230103009
+- Repository: https://github.com/pardhu1502/cloud-kd
+- Model releases: https://github.com/pardhu1502/cloud-kd/releases
+  ([model-v1](https://github.com/pardhu1502/cloud-kd/releases/tag/model-v1),
+  [model-v2](https://github.com/pardhu1502/cloud-kd/releases/tag/model-v2))
+
 ```
 "set an alarm for seven thirty am tomorrow"
   -> {"intent": "alarm_set", "date": "tomorrow", "time": "seven thirty am", "place": null}

@@ -1,7 +1,13 @@
 # Knowledge Distillation and Deployment of a Command Parser on a Local Cloud
 
-Cloud Computing (CS3081) mini project. Repository: https://github.com/pardhu1502/cloud-kd
-(assessed commit: tag `final`).
+Cloud Computing (CS3081) mini project.
+
+**Name:** Palli Pardha Saradhi Charan &nbsp;|&nbsp; **Roll no:** 230103009
+
+Repository: https://github.com/pardhu1502/cloud-kd (assessed commit: tag `final`)
+
+Model releases: https://github.com/pardhu1502/cloud-kd/releases
+(`model-v1`, `model-v2`)
 
 Every number in this report is **measured** and comes from a file in `results/` or `training/`
 (named next to it). **Assumptions** are marked as such. All measurements were taken on one
