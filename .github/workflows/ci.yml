@@ -1,0 +1,94 @@
+name: ci
+
+# Stages, in order: lint -> unit tests -> model evaluation (GitHub Release asset) -> quality gate.
+# Secret scanning runs alongside. To show the gate failing, run it by hand with model_tag=bad
+# (the untrained Pythia-70M published as the model-bad release).
+on:
+  push:
+    branches: [main]
+    tags: [final]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      model_tag:
+        description: "model release to evaluate: v1, v2 or bad"
+        default: v1
+
+permissions:
+  contents: read
+
+env:
+  MODEL_TAG: ${{ github.event.inputs.model_tag || 'v1' }}
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install ruff==0.8.6
+      - run: ruff check .
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  unit-tests:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -q
+
+  evaluate:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install CPU-only PyTorch and the training/eval requirements
+        run: |
+          pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r training/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+      - name: Download model-${{ env.MODEL_TAG }} from the GitHub Release and check its SHA-256
+        run: python scripts/models.py fetch --version "$MODEL_TAG" --dest artifacts/models/eval
+      - name: Predict on validation.jsonl
+        run: python eval/predict_hf.py --model artifacts/models/eval --out results/ci_predictions.jsonl
+      - name: Score
+        run: python tools/score.py results/ci_predictions.jsonl data/validation.jsonl --out results/ci_score.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evaluation
+          path: results/ci_*
+
+  quality-gate:
+    needs: evaluate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: evaluation
+          path: results
+      - name: JSON validity must be at least 95%
+        run: python tools/score.py results/ci_predictions.jsonl data/validation.jsonl --min-validity 95
