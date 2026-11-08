@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parser
+  namespace: app
+  labels:
+    app: parser
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: parser
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # never drop below the current capacity; a new pod must be Ready before an old one goes
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: parser
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: parser
+          image: kd-parser:latest
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: MODEL_URI
+              value: s3://models/v1/
+            - name: MODEL_VERSION
+              value: v1
+            - name: S3_ENDPOINT
+              value: http://seaweedfs.data.svc.cluster.local:8333
+            - name: MAX_NEW_TOKENS
+              value: "64"
+            - name: FAULT_INJECT
+              value: "0"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          envFrom:
+            - secretRef:
+                name: s3-credentials
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 3
+            failureThreshold: 2
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          lifecycle:
+            # give Traefik time to drop this endpoint before the process stops
+            preStop:
+              exec:
+                command: ["sleep", "5"]
