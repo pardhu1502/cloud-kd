@@ -123,9 +123,9 @@ def main():
     out = Path(a.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     (out / 'train.jsonl').write_bytes(data)
-    (out / 'train.sha256').write_text(sha_line, encoding='utf-8')
+    (out / 'train.sha256').write_text(sha_line, encoding='utf-8', newline='\n')
     Path(a.counts).parent.mkdir(parents=True, exist_ok=True)
-    Path(a.counts).write_text(json.dumps({**counts, 'sha256': digest}, indent=2) + '\n', encoding='utf-8')
+    Path(a.counts).write_text(json.dumps({**counts, 'sha256': digest}, indent=2) + '\n', encoding='utf-8', newline='\n')
 
     if not a.no_upload:
         from kd import s3 as s3lib
