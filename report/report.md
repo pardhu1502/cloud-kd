@@ -93,8 +93,10 @@ student's accuracy is therefore capped by the teacher's: full-frame 44% for the 
 FastAPI (`service/app.py`), endpoints `/parse`, `/healthz`, `/readyz`; headers
 `X-Model-Version` and `X-Served-By`; every output validated against `data/schema.json`
 (500 `{"error": "invalid_model_output"}` otherwise; `FAULT_INJECT=1` forces it).
-Image: `python:3.13.1-slim` + CPU-only PyTorch, all versions pinned, no weights. Size: TBD.
-50 sequential requests at 1 CPU / 1 GiB: TBD OK, peak memory TBD (`results/mem_test.txt`).
+Image: `python:3.13.1-slim` + CPU-only PyTorch, all versions pinned, no weights (0 `.safetensors`
+files in the image). Size: 1.71 GB unpacked, 369 MB compressed (`results/image_size.txt`).
+50 sequential requests at 1 CPU / 1 GiB: 48 HTTP 200, 2 HTTP 500 (`invalid_model_output`, the
+model's JSON failed the schema), not OOM-killed, peak memory 454.4 MiB (`results/mem_test.txt`).
 
 ## Task 4: Kubernetes deployment, scaling and reliability
 
@@ -103,12 +105,15 @@ Requests 500m / 512Mi, limits 1 CPU / 1 GiB; readiness `/readyz`, liveness `/hea
 
 | test | result | evidence |
 |---|---|---|
-| HPA 1 -> 2 -> 1 | TBD | `results/hpa_test.txt` |
-| rolling update v1 -> v2, failures | TBD % | `results/rollout_stats.csv` |
-| X-Model-Version after undo | TBD | `results/rollout_test.txt` |
-| recovery: replicas restored, failures | TBD | `results/recovery_test.txt` |
-| cold start (3 runs), median | TBD s | `results/cold_start.txt` |
-| load balancing per replica | TBD / TBD | `results/loadbalance_headers.json` |
+| HPA 1 -> 2 -> 1 | load started 14:48:33; second replica requested by 14:49:00 (CPU 86% of request) and Ready by 14:49:10; load stopped 14:52:32, back to 1 replica by 14:54:01 | `results/hpa_test.txt` |
+| rolling update v1 -> v2, failures | 6 of 298 = 2.0 %, all HTTP 500 `invalid_model_output`, no connection errors | `results/rollout_stats.csv`, `rollout_failures.csv` |
+| X-Model-Version after undo | v2 after the update, v1 after `rollout undo` | `results/rollout_test.txt` |
+| recovery: replicas restored, failures | 2/2 Ready again within 11 s; 4 of 208 = 1.9 %, all HTTP 500 `invalid_model_output` | `results/recovery_test.txt` |
+| cold start (3 runs), median | 9.0 s (model download from S3 3.6-3.8 s) | `results/cold_start.txt` |
+| load balancing per replica | 60 / 53 | `results/loadbalance_headers.json` |
+
+Every failed request in these tests was a 500 from the schema check on the model's output (the
+student's JSON validity is 98%), confirmed in the pod logs; none was caused by a pod going away.
 
 **Limitations.** One laptop, one k3s node: replicas share one CPU and one failure domain, so
 this shows recovery from a pod failure, not fault tolerance across machines. metrics-server
@@ -130,29 +135,33 @@ https://github.com/pardhu1502/cloud-kd/actions/runs/42490284576.
 
 ## Task 7: Performance, cost and review
 
-**Measured** (standard Locust run, `results/loadtest_*`): p50 TBD ms, p95 TBD ms,
-throughput TBD req/s, error rate TBD %, per-pod CPU/memory TBD (`results/loadtest_top.txt`),
-cold start TBD s.
+**Measured** (standard Locust run, 4 users, 2 minutes, `results/loadtest_*`): 128 requests,
+p50 2,400 ms, p95 9,900 ms, max 12,792 ms, throughput 1.09 req/s, error rate 3.1 % (4 HTTP 500,
+all `invalid_model_output`), per-pod CPU 575-1,000m (at the 1 CPU limit under load) and memory
+451-473 Mi (`results/loadtest_top.txt`), cold start 9.0 s.
 
 **Cost** (rate card: 3.50 INR per vCPU-hour, 0.45 INR per GiB-hour; billed on limits):
 
 - one replica = 1 vCPU x 3.50 + 1 GiB x 0.45 = 3.95 INR/hour
-- running replicas during the test = TBD (n), so hourly cost = n x 3.95 = TBD INR/hour
-- requests served per hour = throughput x 3,600 = TBD
-- cost per 1,000 requests = hourly cost / requests per hour x 1,000 = TBD INR
+- running replicas during the test = 2, so hourly cost = 2 x 3.95 = 7.90 INR/hour
+- requests served per hour = 1.0867 x 3,600 = 3,912
+- cost per 1,000 requests = 7.90 / 3,912 x 1,000 = 2.02 INR
 
 **SLO.** 99% of `/parse` requests return HTTP 200 within 30 s, measured over one standard
-load-test run (2 minutes). Error budget = 1% of the requests in that run = TBD requests;
-used TBD failed requests = TBD % of the budget.
+load-test run (2 minutes). Error budget = 1% of 128 requests = 1.28 requests; used 4 failed
+requests = 312 % of the budget, so the SLO was **not met** in this run. Latency was within the
+target (slowest request 12.8 s < 30 s); all four failures were model outputs rejected by the
+schema check, so the fix is model quality (a better student or constrained decoding), not
+more replicas.
 
 | Component | Evidence (measured) | Limitation | Improvement |
 |---|---|---|---|
 | Data and storage | 2,770 of 3,000 replies kept | single SeaweedFS pod, no replication | replicated volumes / erasure coding |
 | Model quality | full-frame 44 % vs teacher 50 % | 70M model, teacher errors copied | larger student or logit KD with a shared tokenizer |
-| Latency and throughput | p95 TBD ms at TBD req/s | one request at a time per pod, CPU only | batching, quantised model, ONNX Runtime |
-| Resource utilisation | TBD m CPU, TBD Mi per pod | CPU-bound, memory mostly idle | lower memory limit, more CPU per pod |
-| Reliability and recovery | cold start TBD s, TBD % errors on pod loss | single node | multi-node cluster, PodDisruptionBudget |
-| Security and cost | TBD INR / 1,000 requests | plain HTTP, one S3 identity for everything | TLS on the Ingress, per-namespace read-only keys |
+| Latency and throughput | p95 9,900 ms at 1.09 req/s | one request at a time per pod, CPU only | batching, quantised model, ONNX Runtime |
+| Resource utilisation | up to 1,000m CPU, about 470 Mi per pod | CPU-bound, memory mostly idle | lower memory limit, more CPU per pod |
+| Reliability and recovery | cold start 9.0 s, 1.9 % errors on pod loss (all model-output 500s) | single node | multi-node cluster, PodDisruptionBudget |
+| Security and cost | 2.02 INR / 1,000 requests | plain HTTP, one S3 identity for everything | TLS on the Ingress, per-namespace read-only keys |
 
 ## References
 
