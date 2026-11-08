@@ -1,0 +1,20 @@
+# Model v2 for the rolling-update test: same as v1 but one more epoch.
+seed: 42
+learning_rate: 3.0e-4
+batch_size: 8
+epochs: 11
+max_seq_length: 96
+
+libraries:
+  python: "3.13"
+  torch: "2.13.0"
+  transformers: "4.57.3"
+
+model_name: EleutherAI/pythia-70m
+model_revision: main
+train_file: data/v1/train.jsonl
+max_train_examples: 1500
+warmup_ratio: 0.05
+weight_decay: 0.0
+output_dir: artifacts/models/v2
+loss_file: training/loss_v2.csv
