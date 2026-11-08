@@ -1,0 +1,24 @@
+# k3d cluster for the project:  k3d cluster create --config cluster/k3d.yaml
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: kd
+servers: 1
+agents: 0
+image: rancher/k3s:v1.31.4-k3s1
+ports:
+  # Traefik ingress -> http://localhost:8080 (the address the load test uses)
+  - port: 8080:80
+    nodeFilters:
+      - loadbalancer
+  # SeaweedFS S3 NodePort -> http://localhost:8333, used from the laptop by clean.py / training
+  - port: 8333:30333
+    nodeFilters:
+      - server:0
+options:
+  k3d:
+    wait: true
+    timeout: "180s"
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
